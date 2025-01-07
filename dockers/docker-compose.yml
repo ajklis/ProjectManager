@@ -1,0 +1,17 @@
+version '3.9'
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: strong_password
+      MYSQL_DATABASE: ProjectManager
+      MYSQL_USER: api
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data: /var/lib/mysql
+      - ./mysql-config: /etc/mysql/conf.d
+volumes:
+  db_data: mysql_data
