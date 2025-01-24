@@ -25,6 +25,15 @@ namespace ProjectManager.API
             // add mediatr for controllers
             builder.Services.AddAppMediatR();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", policy =>
+                    policy.WithOrigins("*")
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                );
+            });
+
             var app = builder.Build();
 
             // migrate database
@@ -33,6 +42,7 @@ namespace ProjectManager.API
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
+            app.UseCors("AllowSpecificOrigin");
 
             app.Run();
         }
