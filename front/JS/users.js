@@ -66,7 +66,7 @@ function displayUsers(users) {
     addNewUser.innerHTML = `
         <h3>Dodaj nowego użytkownika</h3>
         <p>Wypełnij formularz, aby dodać użytkownika.</p>
-        <button class="btn">Dodaj użytkownika</button>
+        <a href="users_add.html" class="a-button"><button class="btn secondary">Dodaj użytkownika</button></a>
     `;
 
     userList.appendChild(addNewUser);

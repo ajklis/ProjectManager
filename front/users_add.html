@@ -1,0 +1,57 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS/styles.css">
+    <script src="js/add_user.js" defer></script> <!-- Użycie defer, aby skrypt załadował się po stronie -->
+    <title>Add User</title>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">PROJECT MANAGER</div>
+            <nav>
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="projects.html" class="nav-item">Projects</a>
+                <a href="tasks.html" class="nav-item">Tasks</a>
+                <a href="users.html" class="nav-item active">Users</a>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <form class="addForm" id="addUserForm">
+                <h1>Add User</h1>
+        
+                <!-- Name -->
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter user's name">
+        
+                <!-- Email -->
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="Enter user's email">
+        
+                <!-- Password -->
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required placeholder="Enter user's password">
+        
+                <!-- Role -->
+                <label for="role">Role:</label>
+                <select id="role" name="role" required>
+                    <option value="">Select role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Developer">Developer</option>
+                    <option value="Manager">Manager</option>
+                </select>
+        
+                <!-- Submit Button -->
+                <button class="btn" type="submit">Add User</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Task Manager. Wszystkie prawa zastrzeżone.</p>
+    </footer>
+</body>
+</html>

@@ -44,6 +44,8 @@ namespace ProjectManager.API
             app.MapControllers();
             app.UseCors("AllowSpecificOrigin");
 
+            app.Urls.Add("http://*:5000");
+
             app.Run();
         }
     }
