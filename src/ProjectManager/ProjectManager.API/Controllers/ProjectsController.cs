@@ -40,5 +40,10 @@ namespace ProjectManager.API.Controllers
         [HttpPost("update")]
         public async Task<IActionResult> Update([FromBody] Project project)
             => FromCommandResult(await _mediator.Send(new UpdateProjectCommand(project.Id, project.Name, project.Description, project.Status, project.StartDate, project.EndDate)));
+
+        // GET: api/projects/delete/id
+        [HttpGet("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
+            => FromCommandResult(await _mediator.Send(new DeleteProjectCommand(id)));
     }
 }
