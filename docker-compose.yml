@@ -1,7 +1,7 @@
 services:
   mysql:
+    container_name: db
     image: mysql:latest
-    container_name: mysql-container
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password 
@@ -12,6 +12,12 @@ services:
       - "3306:3306" 
     volumes:
       - db_data:/var/lib/mysql 
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "api", "-ppassword"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+
   api:
     container_name: api
     build:
@@ -20,9 +26,18 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     restart: always
     environment:
       - ASPNETCORE_URLS=http://*:5000
+  nginx:
+    image: nginx:latest
+    container_name: front
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src/web:/usr/share/nginx/html:ro
 volumes:
   db_data:

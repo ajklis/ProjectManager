@@ -21,6 +21,7 @@ namespace ProjectManager.Application.Commands
         {
             try
             {
+                request.Project.CreatedAt = DateTime.Now;
                 await _projectRepo.AddProject(request.Project);
                 return CommandResult.Success(ProjectDto.FromProject(request.Project));
             }

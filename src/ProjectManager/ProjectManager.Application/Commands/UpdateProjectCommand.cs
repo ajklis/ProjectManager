@@ -9,7 +9,7 @@ namespace ProjectManager.Application.Commands
 {
     public class UpdateProjectCommand : Project, IRequest<CommandResult>
     {
-        public UpdateProjectCommand(int id, string name, string? description, ProjectTaskStatus status, DateTime startDate, DateTime? endDate)
+        public UpdateProjectCommand(int id, string name, string? description, ProjectTaskStatus status, DateTime? startDate, DateTime? endDate)
             : base (id, name, description, status, startDate, endDate) {  }
     }
 

@@ -13,13 +13,13 @@ namespace ProjectManager.Application.Models
 
         public ProjectTaskStatus Status { get; set; }
 
-        public DateTime StartDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        private ProjectDto(int id, string name, string? description, ProjectTaskStatus status, DateTime startDate, DateTime? endDate, DateTime createdAt)
+        private ProjectDto(int id, string name, string? description, ProjectTaskStatus status, DateTime? startDate, DateTime? endDate, DateTime createdAt)
         {
             Id = id;
             Name = name;

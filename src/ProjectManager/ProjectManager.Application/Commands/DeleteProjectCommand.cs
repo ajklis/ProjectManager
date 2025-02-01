@@ -21,7 +21,8 @@ namespace ProjectManager.Application.Commands
             {
                 var success = await _projectRepo.RemoveProjectById(request.Id);
 
-                return success ? CommandResult.Success(null)
+                return success 
+                    ? CommandResult.Success("Project deleted")
                     : CommandResult.Failed("Project not found", 404);
             }
             catch (Exception e)

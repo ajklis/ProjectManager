@@ -21,7 +21,8 @@ namespace ProjectManager.Application.Commands
             {
                 var success = await _taskRepo.RemoveTaskById(request.Id);
 
-                return success ? CommandResult.Success(request.Id)
+                return success 
+                    ? CommandResult.Success("Project task deleted")
                     : CommandResult.Failed("Project task not found", 404);
             }
             catch (Exception e)

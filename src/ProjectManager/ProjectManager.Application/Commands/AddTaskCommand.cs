@@ -20,6 +20,7 @@ namespace ProjectManager.Application.Commands
         {
             try
             {
+                request.Task.CreatedAt = DateTime.Now;
                 await _taskRepo.AddTask(request.Task.Id, request.Task);
                 return CommandResult.Success(request.Task);
             }
