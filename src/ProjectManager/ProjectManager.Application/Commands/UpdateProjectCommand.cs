@@ -4,6 +4,7 @@ using ProjectManager.Application.Models;
 using ProjectManager.Domain.Contracts;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Enums;
+using System.Threading.Channels;
 
 namespace ProjectManager.Application.Commands
 {
@@ -36,6 +37,8 @@ namespace ProjectManager.Application.Commands
                 project.StartDate = project.StartDate.Equals(request.StartDate) ? project.StartDate : request.StartDate;
                 project.EndDate = request.EndDate ?? project.EndDate;
                 project.Status = project.Status.Equals(request.Status) ? project.Status : request.Status;
+
+                await _projectRepo.Commit();
 
                 return CommandResult.Success(ProjectDto.FromProject(project));
             }
