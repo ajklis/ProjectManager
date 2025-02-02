@@ -39,6 +39,7 @@ function displayProjects(projects) {
         <p><strong>Data utworzenia:</strong> ${new Date(project.createdAt).toLocaleDateString()}</p>
         <p><strong>Start:</strong> ${new Date(project.startDate).toLocaleDateString()}</p>
         <p><strong>Koniec:</strong> ${new Date(project.endDate).toLocaleDateString()}</p>
+        <p><strong>Priorytet:</strong> ${project.priority}</p>
         <div class="buttons">
             <button class="btn secondary edit-btn" data-id="${project.id}">Edytuj</button>
             <button class="btn secondary delete-btn" data-id="${project.id}">Usuń</button>

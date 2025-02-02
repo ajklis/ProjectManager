@@ -10,12 +10,23 @@ function editProject(projectId) {
             const form = document.getElementById("editProjectForm");
             form.elements["name"].value = project.name;
             form.elements["description"].value = project.description;
-            form.elements["startDate"].value = project.startDate;
-            form.elements["endDate"].value = project.endDate;
             form.elements["status"].value = project.status;
             form.elements["priority"].value = project.priority;
+            
+            // Ustawienie dat w formularzu w formacie YYYY-MM-DD
+            form.elements["startDate"].value = formatDate(project.startDate);
+            form.elements["endDate"].value = formatDate(project.endDate);
         })
         .catch(error => console.error("Error fetching project data:", error));
+}
+
+// Funkcja do formatowania daty do formatu YYYY-MM-DD
+function formatDate(date) {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Miesiące są od 0, więc dodajemy 1
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
 }
 
 // Funkcja do aktualizacji projektu
@@ -78,10 +89,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             const form = document.getElementById("editProjectForm");
             form.elements["name"].value = project.name;
             form.elements["description"].value = project.description;
-            form.elements["startDate"].value = project.startDate;
-            form.elements["endDate"].value = project.endDate;
             form.elements["status"].value = project.status;
             form.elements["priority"].value = project.priority;
+
+            // Ustawienie dat w formularzu w formacie YYYY-MM-DD
+            form.elements["startDate"].value = formatDate(project.startDate);
+            form.elements["endDate"].value = formatDate(project.endDate);
             currentProjectId = projectId;
         } catch (error) {
             console.error("Error loading project data:", error);
