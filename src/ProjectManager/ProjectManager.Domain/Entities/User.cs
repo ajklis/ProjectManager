@@ -12,7 +12,7 @@ namespace ProjectManager.Domain.Entities
         
         public string Password { get; set; }
         
-        public UserRole Role { get; set; } 
+        public UserRole? Role { get; set; } 
         
         public DateTime CreatedAt { get; set; }
 

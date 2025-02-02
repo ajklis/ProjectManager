@@ -21,11 +21,17 @@ namespace ProjectManager.Application.Commands
         {
             try
             {
-                var user = await _userRepo.UpdateUser(request.User);
+                var user = await _userRepo.GetUserById(request.User.Id);
 
                 if (user is null)
                     return CommandResult.Failed("User not found", 404);
 
+                user.Name = request.User.Name ?? user.Name;
+                user.Email = request.User.Email ?? user.Email;
+                user.Role = request.User.Role ?? user.Role;
+
+                await _userRepo.Commit();
+                
                 return CommandResult.Success(UserDto.FromUser(user));
             }
             catch (Exception e)
