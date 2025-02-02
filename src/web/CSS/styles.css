@@ -177,24 +177,22 @@ footer {
     display: flex;
 }
 
-.formContainer{
-    width: 40%;
-    height: 20%;
-    background-color: #1e1e1e;
-    padding: 2%;
-}
 
 .addForm {
     background-color: #333;
     height: 30%;
-    width: 15%;
+    width: 40%;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
+#description
+{
+    width: 100%;
+}
 
 .addForm input, select {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     margin-bottom: 1rem;
     border: 1px solid #ddd;
