@@ -80,19 +80,19 @@ function displayProjects(projects) {
 // Funkcja do usuwania projektu
 async function deleteProject(id) {
     try {
-        const response = await fetch(deleteProjectUrl.replace("#id", id), { method: "DELETE" });
+        const response = await fetch(deleteProjectUrl.replace("#id", id), { method: "GET" });
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         await fetchProjects(); // Odświeżenie listy projektów po usunięciu
     } catch (error) {
-        console.error("Błąd podczas usuwania projektu:", error);
+        console.error("Błąd podczas usuwania projektu:", error);    
     }
 }
 
 // Funkcja do edycji projektu
 async function editProject(id) {
-    window.location.href = `/projects_update.html?id=${id}`;
+    window.location.href = `/update_projects.html?id=${id}`;
 }
 
 // Pobranie listy projektów po załadowaniu strony

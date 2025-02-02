@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 alert("Projekt został dodany!");
                 document.getElementById("projectForm").reset(); // Resetowanie formularza
-                window.location.href = "/users.html";
+                window.location.href = "/projects.html";
             } else {
                 alert("Wystąpił błąd. Spróbuj ponownie.");
             }

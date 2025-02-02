@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edytuj Projekt</title>
+    <link rel="stylesheet" href="CSS/styles.css"> <!-- Łącze do zaktualizowanego CSS -->
+    <script defer src="js/update_projects.js"></script>
+</head>
+<body>
+
+    <main>
+        <div class="container">
+           
+                <form id="editProjectForm" class="addForm">
+                    <h1>Edytuj projekt</h1>
+
+                    <label for="name">Nazwa projektu:</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="description">Opis projektu:</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+
+                    <label for="startDate">Data rozpoczęcia:</label>
+                    <input type="date" id="startDate" name="startDate" required>
+
+                    <label for="endDate">Data zakończenia:</label>
+                    <input type="date" id="endDate" name="endDate" required>
+
+                    <label for="status">Status:</label>
+                    <select id="status" name="status" required>
+                        <option value="ToDo">Zaplanowany</option>
+                        <option value="InProgress">W toku</option>
+                        <option value="Completed">Zakończony</option>
+                        <option value="Cancelled">Anulowany</option>
+                    </select>
+
+                    <label for="priority">Priorytet:</label>
+                    <select id="priority" name="priority" required>
+                        <option value="Low">Niski</option>
+                        <option value="Medium">Średni</option>
+                        <option value="High">Wysoki</option>
+                    </select>
+
+                    <button type="submit">Zapisz zmiany</button>
+                </form>
+           
+        </div>
+    </main>
+</body>
+</html>
