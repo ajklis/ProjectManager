@@ -4,14 +4,13 @@ using ProjectManager.Application.Models;
 using ProjectManager.Domain.Contracts;
 using ProjectManager.Domain.Entities;
 using ProjectManager.Domain.Enums;
-using System.Threading.Channels;
 
 namespace ProjectManager.Application.Commands
 {
     public class UpdateProjectCommand : Project, IRequest<CommandResult>
     {
-        public UpdateProjectCommand(int id, string name, string? description, ProjectTaskStatus status, DateTime? startDate, DateTime? endDate)
-            : base (id, name, description, status, startDate, endDate) {  }
+        public UpdateProjectCommand(int id, string name, string? description, ProjectTaskStatus status, ProjectTaskPriority priority, DateTime? startDate, DateTime? endDate)
+            : base (id, name, description, status, priority, startDate, endDate) {  }
     }
 
     public class UpdateProjectCommandHandler : IRequestHandler<UpdateProjectCommand, CommandResult>
@@ -37,6 +36,7 @@ namespace ProjectManager.Application.Commands
                 project.StartDate = project.StartDate.Equals(request.StartDate) ? project.StartDate : request.StartDate;
                 project.EndDate = request.EndDate ?? project.EndDate;
                 project.Status = project.Status.Equals(request.Status) ? project.Status : request.Status;
+                project.Priority = project.Priority.Equals(request.Priority) ? project.Priority : request.Priority;
 
                 await _projectRepo.Commit();
 

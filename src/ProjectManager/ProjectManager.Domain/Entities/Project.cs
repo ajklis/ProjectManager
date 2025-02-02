@@ -15,6 +15,8 @@ namespace ProjectManager.Domain.Entities
 
         public ProjectTaskStatus Status { get; set; }
 
+        public ProjectTaskPriority Priority { get; set; }
+
         public DateTime? StartDate { get; set; }
         
         public DateTime? EndDate { get; set; }
@@ -25,12 +27,13 @@ namespace ProjectManager.Domain.Entities
 
         public ICollection<ProjectTask> ProjectTasks { get; set; }
 
-        public Project(int id, string name, string? description, ProjectTaskStatus status, DateTime? startDate, DateTime? endDate)
+        public Project(int id, string name, string? description, ProjectTaskStatus status, ProjectTaskPriority priority, DateTime? startDate, DateTime? endDate)
         {
             Id = id;
             Name = name;
             Description = description;
             Status = status;
+            Priority = priority;
             StartDate = startDate;
             EndDate = endDate;
         }

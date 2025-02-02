@@ -13,24 +13,27 @@ namespace ProjectManager.Application.Models
 
         public ProjectTaskStatus Status { get; set; }
 
+        public ProjectTaskPriority Priority { get; set; }
+
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
-        private ProjectDto(int id, string name, string? description, ProjectTaskStatus status, DateTime? startDate, DateTime? endDate, DateTime createdAt)
+        private ProjectDto(int id, string name, string? description, ProjectTaskStatus status, ProjectTaskPriority priority, DateTime? startDate, DateTime? endDate, DateTime createdAt)
         {
             Id = id;
             Name = name;
             Description = description;
             Status = status;
+            Priority = priority;
             StartDate = startDate;
             EndDate = endDate;
             CreatedAt = createdAt;
         }
 
         public static ProjectDto FromProject(Project project)
-            => new ProjectDto(project.Id, project.Name, project.Description, project.Status, project.StartDate, project.EndDate, project.CreatedAt);
+            => new ProjectDto(project.Id, project.Name, project.Description, project.Status, project.Priority, project.StartDate, project.EndDate, project.CreatedAt);
     }
 }
