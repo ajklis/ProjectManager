@@ -32,14 +32,14 @@ function displayUsers(users) {
         userItem.classList.add("feature-item");
 
         userItem.innerHTML = `
-            <h3>${user.name}</h3>
-            <p>Rola: ${user.role}</p>
-            <p>Email: ${user.email}</p>
-            <div class="buttons">
-                <button class="btn secondary edit-btn data-id=${user.id}">Edytuj</button>
-                <button class="btn secondary delete-btn" data-id="${user.id}">Usuń</button>
-            </div>
-        `;
+        <h3>${user.name}</h3>
+        <p>Rola: ${user.role}</p>
+        <p>Email: ${user.email}</p>
+        <div class="buttons">
+            <button class="btn secondary edit-btn" data-id="${user.id}">Edytuj</button>
+            <button class="btn secondary delete-btn" data-id="${user.id}">Usuń</button>
+        </div>
+         `;
 
         userList.appendChild(userItem);
     });
@@ -51,12 +51,12 @@ function displayUsers(users) {
             deleteUser(userId);
         });
     });
-
+    
     const editButtons = document.querySelectorAll(".edit-btn");
     editButtons.forEach(button => {
         button.addEventListener("click", (event) => {
             const userId = parseInt(event.target.getAttribute("data-id"), 10);
-            edit(userId);
+            editUser(userId);
         });
     });
 
@@ -84,8 +84,8 @@ async function deleteUser(id){
     }
 }
 
-async function editUser(id){
-
+async function editUser(id) {
+    window.location.href = `/users_update.html?id=${id}`;
 }
 
 

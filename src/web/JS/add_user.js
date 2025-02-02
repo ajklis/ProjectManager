@@ -29,6 +29,7 @@ function addUser(event) {
             if (response.ok) {
                 alert("User added successfully!");
                 document.getElementById("addUserForm").reset(); // Resetowanie formularza po pomyślnym dodaniu
+                window.location.href = "/users.html";
             } else {
                 alert("Error adding user. Please try again.");
             }
