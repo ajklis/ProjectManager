@@ -13,8 +13,8 @@ namespace ProjectManager.API.Controllers
 
         // GET: api/projects/all
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll(Guid tokenId)
-            => await HandleRequest(tokenId, new GetAllProjectsQuery(), user => user.Role == Domain.Enums.UserRole.Admin);
+        public async Task<IActionResult> GetAll()
+            => await HandleRequest(new GetAllProjectsQuery(), user => user.Role == Domain.Enums.UserRole.Admin);
 
         // GET: api/projects/5
         [HttpGet("{id}")]

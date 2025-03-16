@@ -22,7 +22,7 @@ namespace ProjectManager.API.Controllers
             ? StatusCode(result.StatusCode, result.ReturnValue)
             : StatusCode(result.StatusCode, result.Message);
 
-        protected async Task<IActionResult> HandleRequest<T>(Guid TokenId, T request, Func<User, bool> allowedPredicate = null) where T : IRequest<CommandResult>
+        protected async Task<IActionResult> HandleRequest<T>(T request, Func<User, bool> allowedPredicate = null) where T : IRequest<CommandResult>
         {
             var headers = this.Request.Headers;
 
@@ -36,7 +36,7 @@ namespace ProjectManager.API.Controllers
             if (!tokenResult.IsSuccess)
                 return FromCommandResult(CommandResult.Unauthorized());
 
-            var userResult = await _mediator.Send(new GetUserForTokenQuery(TokenId));
+            var userResult = await _mediator.Send(new GetUserForTokenQuery(tokenId));
             if (!tokenResult.IsSuccess || userResult.ReturnValue is null)
                 return FromCommandResult(CommandResult.InternalServerError());
 
