@@ -10,7 +10,7 @@ namespace ProjectManager.Domain.Entities
         
         public string Email { get; set; }
         
-        public string Password { get; set; }
+        public string HashedPassword { get; set; }
         
         public UserRole? Role { get; set; } 
         

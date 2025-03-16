@@ -11,5 +11,6 @@ namespace ProjectManager.Domain.Contracts
         Task<User?> GetUserById(int id);
         Task<IEnumerable<User>?> GetAll();
         Task<User?> UpdateUser(User user);
+        Task<User?> GetUserByEmail(string email);
     }
 }

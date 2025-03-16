@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ProjectManager.Domain.Contracts;
 using ProjectManager.Infrastructure.Persistence;
 using ProjectManager.Infrastructure.Repositories;
+using ProjectManager.Infrastructure.Services;
 
 namespace ProjectManager.Infrastructure.Extensions
 {
@@ -21,6 +22,10 @@ namespace ProjectManager.Infrastructure.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
+
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
+            services.AddHostedService(provider => provider.GetRequiredService<IAuthenticationService>());
+            services.AddSingleton<IPasswordHashingService, PasswordHashingService>();
         }
     }
 }

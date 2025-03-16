@@ -9,46 +9,62 @@ namespace ProjectManager.API.Controllers
 {
     public class UsersController : BaseController
     {
-        private IMediator _mediator;
-
-        public UsersController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public UsersController(IMediator mediator) : base(mediator) { }
 
         // GET: api/users/all
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll() 
-            => FromCommandResult(await _mediator.Send(new GetAllUsersQuery()));
+        public async Task<IActionResult> GetAll(Guid tokenId)
+            => await HandleRequest(
+                tokenId, // access token id
+                new GetAllProjectsQuery(), // query to be executed by mediator
+                null);//user => user.Role == Domain.Enums.UserRole.Admin); // predicate to not allow unauthorized users
 
         // GET: api/users/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Details(int id) 
-            => FromCommandResult(await _mediator.Send(new GetUserByIdQuery(id)));
+        public async Task<IActionResult> Details(int id, Guid tokenId)
+            => await HandleRequest(
+                tokenId,
+                new GetUserByIdQuery(id),
+                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == id);
 
         // POST: api/users
         [HttpPost()]
-        public async Task<IActionResult> Details([FromBody] IdPostModel model)
-            => FromCommandResult(await _mediator.Send(new GetUserByIdQuery(model.Id)));
+        public async Task<IActionResult> Details([FromBody] IdPostModel model, Guid tokenId)
+            => await HandleRequest(
+                tokenId,
+                new GetUserByIdQuery(model.Id),
+                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == model.Id);
 
         // POST: api/users/add
         [HttpPost("add")]
-        public async Task<IActionResult> Add([FromBody] User user) 
-            => FromCommandResult(await _mediator.Send(new AddUserCommand(user)));
+        public async Task<IActionResult> Add([FromBody] UserAddModel user, Guid tokenId)
+            => await HandleRequest(
+                tokenId,
+                new AddUserCommand(user.Name, user.Email, user.Password, user.Role),
+                user => user.Role == Domain.Enums.UserRole.Admin);
 
         // POST: api/users/update
         [HttpPost("update")]
-        public async Task<IActionResult> Update([FromBody] User update) 
-            => FromCommandResult(await _mediator.Send(new UpdateUserCommand(update)));
+        public async Task<IActionResult> Update([FromBody] User update, Guid tokenId)
+            => await HandleRequest(
+                tokenId, 
+                new UpdateUserCommand(update), 
+                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == update.Id);
 
         // GET: api/users/delete/5
         [HttpGet("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-            => FromCommandResult(await _mediator.Send(new DeleteUserCommand(id)));
+        public async Task<IActionResult> Delete(int id, Guid tokenId)
+            => await HandleRequest(
+                tokenId,
+                new DeleteUserCommand(id),
+                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == id);
 
         // POST: api/users/delete
         [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] IdPostModel model)
-            => FromCommandResult(await _mediator.Send(new DeleteUserCommand(model.Id)));
+        public async Task<IActionResult> Delete([FromBody] IdPostModel model, Guid tokenId)
+            => await HandleRequest(
+                tokenId,
+                new DeleteUserCommand(model.Id),
+                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == model.Id);
     }
 }

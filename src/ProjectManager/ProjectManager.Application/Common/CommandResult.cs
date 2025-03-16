@@ -28,5 +28,8 @@
 #endif
             return new CommandResult(false, null, "Internal server error", 500);
         }
+
+        public static CommandResult Unauthorized()
+            => new CommandResult(false, null, "Unauthorized", 401);
     }
 }

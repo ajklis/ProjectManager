@@ -8,12 +8,7 @@ namespace ProjectManager.API.Controllers
 {
     public class TasksController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public TasksController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public TasksController(IMediator mediator) : base(mediator) { }
 
         // POST: api/tasks/add
         [HttpPost("add")]

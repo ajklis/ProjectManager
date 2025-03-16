@@ -18,7 +18,6 @@ namespace ProjectManager.Infrastructure.Repositories
 
         public async Task AddUser(User user)
         {
-            user.CreatedAt = DateTime.Now;
             await _db.Users.AddAsync(user);
             await _db.SaveChangesAsync();
         }
@@ -68,6 +67,11 @@ namespace ProjectManager.Infrastructure.Repositories
             await _db.SaveChangesAsync();
 
             return user;
+        }
+
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            return await _db.Users.Where(x => x.Email == email).FirstOrDefaultAsync();
         }
     }
 }

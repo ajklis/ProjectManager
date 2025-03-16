@@ -9,17 +9,12 @@ namespace ProjectManager.API.Controllers
 {
     public class ProjectsController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public ProjectsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public ProjectsController(IMediator mediator) : base(mediator) { }
 
         // GET: api/projects/all
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
-            => FromCommandResult(await _mediator.Send(new GetAllProjectsQuery()));
+        public async Task<IActionResult> GetAll(Guid tokenId)
+            => await HandleRequest(tokenId, new GetAllProjectsQuery(), user => user.Role == Domain.Enums.UserRole.Admin);
 
         // GET: api/projects/5
         [HttpGet("{id}")]
