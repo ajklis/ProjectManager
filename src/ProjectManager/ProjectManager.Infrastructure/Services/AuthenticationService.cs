@@ -8,7 +8,7 @@ using ProjectManager.Infrastructure.Options;
 
 namespace ProjectManager.Infrastructure.Services
 {
-    internal class AuthenticationService : BackgroundService, IAuthenticationService
+    public sealed class AuthenticationService : BackgroundService, IAuthenticationService
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IOptions<AuthenticationOptions> _options;
@@ -24,14 +24,11 @@ namespace ProjectManager.Infrastructure.Services
         public async Task<AccessToken?> AuthenticateUserAsync(string email, string hashedPassword)
         {
             var repo = GetUserRepo();
-
             var user = await repo.GetUserByEmail(email);
-
             if (user is null || user.HashedPassword != hashedPassword)
                 return null;
 
             AccessToken token;
-
             if (tokenStore.Where(x => x.UserId == user.Id).Any())
             {
                 token = tokenStore.Where(x => x.UserId == user.Id).FirstOrDefault();
@@ -49,7 +46,6 @@ namespace ProjectManager.Infrastructure.Services
         public async Task<AccessToken?> AuthenticateTokenAsync(Guid tokenId)
         {
             var token = tokenStore.Where(x => x.TokenId == tokenId).FirstOrDefault();
-
             if (token is null || token.ExpiresAt < DateTime.Now)
             {
                 tokenStore.Remove(token);
@@ -64,14 +60,11 @@ namespace ProjectManager.Infrastructure.Services
         public async Task<User?> GetUserForTokenAsync(Guid tokenId)
         {
             var repo = GetUserRepo();
-
             var token = tokenStore.Find(x => x.TokenId == tokenId);
-
             if (token is null)
                 return null;
 
             var user = await repo.GetUserById(token.UserId);
-
             return user;
         }
 
