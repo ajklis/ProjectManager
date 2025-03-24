@@ -4,26 +4,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="CSS/styles.css">
     <script src="js/add_user.js" defer></script> <!-- Użycie defer, aby skrypt załadował się po stronie -->
-    <title>Add User</title>
+    <title>Dodaj Użytkownika</title>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo">PROJECT MANAGER</div>
             <nav>
-                <a href="index.html" class="nav-item">Home</a>
-                <a href="projects.html" class="nav-item">Projects</a>
-                <a href="users.html" class="nav-item active">Users</a>
+                <a href="index.html" class="nav-item">Strona Główna</a>
+                <a href="projects.html" class="nav-item">Projekty</a>
+                <a href="users.html" class="nav-item active">Użytkownicy</a>
             </nav>
         </div>
     </header>
     <main>
         <div class="container">
             <form class="addForm" id="addUserForm">
-                <h1>Add User</h1>
+                <h1>Dodaj Użytkownika</h1>
         
                 <!-- Name -->
-                <label for="name">Name:</label>
+                <label for="name">Imie:</label>
                 <input type="text" id="name" name="name" required placeholder="Enter user's name">
         
                 <!-- Email -->
@@ -31,20 +31,20 @@
                 <input type="email" id="email" name="email" required placeholder="Enter user's email">
         
                 <!-- Password -->
-                <label for="password">Password:</label>
+                <label for="password">Hasło:</label>
                 <input type="password" id="password" name="password" required placeholder="Enter user's password">
         
                 <!-- Role -->
-                <label for="role">Role:</label>
+                <label for="role">Rola:</label>
                 <select id="role" name="role" required>
-                    <option value="">Select role</option>
+                    <option value="">Wybierz Role</option>
                     <option value="Admin">Admin</option>
                     <option value="Developer">Developer</option>
                     <option value="Manager">Manager</option>
                 </select>
         
                 <!-- Submit Button -->
-                <button class="btn" type="submit">Add User</button>
+                <button class="btn" type="submit">Dodaj Użytkownika</button>
             </form>
         </div>
     </main>
