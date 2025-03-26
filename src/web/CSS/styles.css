@@ -232,3 +232,67 @@ footer {
     margin-bottom: 0.5rem;
     font-weight: bold;
 }
+/* zmiany chudy*/
+.buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.button2 {
+    background-color: #2a9e30;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 40%;
+    display: inline-block;
+    margin-left: 7%;
+  }
+.button1 {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 40%;
+    display: inline-block;
+    margin-right: 7%;
+  }
+
+form {
+    background-color: #1e1e1e;
+    border-radius: 20px;
+    padding: 40px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+ }
+.body1 {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.text1 {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+input[type="text"] {
+    font-size: 18px;
+}
+
+.title {
+    font-size: 2.5rem;
+    color: #4a90e2;
+    font-weight: bold;
+    margin-bottom: 1%;
+}
