@@ -15,7 +15,7 @@ namespace ProjectManager.API.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
             => await HandleRequest(
-                new GetAllProjectsQuery(), // query to be executed by mediator
+                new GetAllUsersQuery(), // query to be executed by mediator
                 user => user.Role == Domain.Enums.UserRole.Admin); // predicate to not allow unauthorized users
 
         // GET: api/users/5

@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using AuthenticationService.Contracts;
+using MediatR;
+using Newtonsoft.Json;
 using ProjectManager.Application.Common;
-using ProjectManager.Domain.Contracts;
+using ProjectManager.Application.Models;
 
 namespace ProjectManager.Application.Queries
 {
@@ -8,21 +10,33 @@ namespace ProjectManager.Application.Queries
 
     public class GetUserForTokenQueryHandler : IRequestHandler<GetUserForTokenQuery, CommandResult>
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthenticationRequester _auth;
+        private readonly IMediator _mediator;
 
-        public GetUserForTokenQueryHandler(IAuthenticationService authenticationService)
+        public GetUserForTokenQueryHandler(IAuthenticationRequester auth, IMediator mediator)
         {
-            _authenticationService = authenticationService;
+            _auth = auth;
+            _mediator = mediator;
         }
 
         public async Task<CommandResult> Handle(GetUserForTokenQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var user = await _authenticationService.GetUserForTokenAsync(request.TokenId);
+                Console.WriteLine(request.TokenId);
+                var userId = await _auth.SendGetUserRequest(request.TokenId);
+
+                Console.WriteLine($"User id for token {request.TokenId}: {userId}");
+
+                if (userId is null)
+                    return CommandResult.Failed("User not found", 404);
+
+                var user = await _mediator.Send(new GetUserByIdQuery((int)userId), cancellationToken);
+
+                Console.WriteLine(JsonConvert.SerializeObject(user));
 
                 return user is not null
-                    ? CommandResult.Success(user)
+                    ? CommandResult.Success(user.ReturnValue as UserDto)
                     : CommandResult.Failed("User not found", 404);
             }
             catch (Exception e)

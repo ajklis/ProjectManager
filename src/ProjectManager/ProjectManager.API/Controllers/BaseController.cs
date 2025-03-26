@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProjectManager.Application.Common;
+using ProjectManager.Application.Models;
 using ProjectManager.Application.Queries;
 using ProjectManager.Domain.Entities;
 
@@ -22,28 +23,34 @@ namespace ProjectManager.API.Controllers
             ? StatusCode(result.StatusCode, result.ReturnValue)
             : StatusCode(result.StatusCode, result.Message);
 
-        protected async Task<IActionResult> HandleRequest<T>(T request, Func<User, bool> allowedPredicate = null) where T : IRequest<CommandResult>
+        protected async Task<IActionResult> HandleRequest<T>(T request, Func<UserDto, bool> allowedPredicate = null) where T : IRequest<CommandResult>
         {
             var headers = this.Request.Headers;
 
             Console.WriteLine(JsonConvert.SerializeObject(headers));
 
-            if (!Guid.TryParse(headers["TokenId"], out var tokenId))
-                return FromCommandResult(CommandResult.Unauthorized());
-            
-            var tokenResult = await _mediator.Send(new AuthenticateTokenQuery(tokenId));
+            if (headers["SkipAuth"] != "true")
+            {
+                if (!Guid.TryParse(headers["TokenId"], out var tokenId))
+                    return FromCommandResult(CommandResult.Unauthorized());
 
-            if (!tokenResult.IsSuccess)
-                return FromCommandResult(CommandResult.Unauthorized());
+                var tokenResult = await _mediator.Send(new AuthenticateTokenQuery(tokenId));
 
-            var userResult = await _mediator.Send(new GetUserForTokenQuery(tokenId));
-            if (!tokenResult.IsSuccess || userResult.ReturnValue is null)
-                return FromCommandResult(CommandResult.InternalServerError());
+                if (!tokenResult.IsSuccess)
+                    return FromCommandResult(CommandResult.Unauthorized());
 
-            var user = userResult.ReturnValue as User;
+                var userResult = await _mediator.Send(new GetUserForTokenQuery(tokenId));
+                if (!tokenResult.IsSuccess || userResult.ReturnValue is null)
+                    return FromCommandResult(CommandResult.InternalServerError());
 
-            if (allowedPredicate is not null && !allowedPredicate(user))
-                return FromCommandResult(CommandResult.Unauthorized());
+                var user = userResult.ReturnValue as UserDto;
+
+                if (user is null)
+                    return FromCommandResult(CommandResult.Unauthorized());
+
+                if (allowedPredicate is not null && !allowedPredicate(user))
+                    return FromCommandResult(CommandResult.Unauthorized());
+            }
 
             return FromCommandResult(await _mediator.Send(request));
         }

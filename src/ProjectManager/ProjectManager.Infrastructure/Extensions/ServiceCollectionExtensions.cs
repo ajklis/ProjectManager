@@ -22,9 +22,6 @@ namespace ProjectManager.Infrastructure.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IProjectTaskRepository, ProjectTaskRepository>();
-
-            services.AddSingleton<IAuthenticationService, AuthenticationService>();
-            services.AddHostedService(provider => provider.GetRequiredService<IAuthenticationService>());
             services.AddSingleton<IPasswordHashingService, PasswordHashingService>();
         }
     }

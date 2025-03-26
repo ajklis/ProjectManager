@@ -10,18 +10,19 @@ EXPOSE 5000
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["ProjectManager.API/ProjectManager.API.csproj", "ProjectManager.API/"]
+COPY ["./ProjectManager.API/ProjectManager.API.csproj", "ProjectManager.API/"]
 RUN dotnet restore "./ProjectManager.API/ProjectManager.API.csproj"
 COPY . .
-WORKDIR "/src/ProjectManager.API"
+WORKDIR "/src/ProjectManager.API/"
 RUN dotnet build "./ProjectManager.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# Publish stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
+RUN rm -rf "/src/AuthenticationService/appsettings*"
 RUN dotnet publish "./ProjectManager.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# Final stage
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

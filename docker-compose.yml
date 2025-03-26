@@ -21,7 +21,7 @@ services:
   api:
     container_name: api
     build:
-      context: src/ProjectManager/
+      context: src/ProjectManager 
       dockerfile: ProjectManager.API/Dockerfile
     ports:
       - "5000:5000"
@@ -31,6 +31,23 @@ services:
     restart: always
     environment:
       - ASPNETCORE_URLS=http://*:5000
+    volumes:
+      - ./src/ProjectManager/ProjectManager.API/appsettings.json:/app/appsettings.json
+  auth:
+    container_name: auth
+    build:
+      context: src/ProjectManager 
+      dockerfile: AuthenticationService/Dockerfile
+    ports:
+      - "6000:6000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=http://*:6000
+    volumes:
+      - ./src/ProjectManager/ProjectManager.API/appsettings.json:/app/appsettings.json
   nginx:
     image: nginx:latest
     container_name: front

@@ -1,4 +1,3 @@
-using ProjectManager.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
@@ -23,10 +22,8 @@ namespace ProjectManager.API
             // add db context for app
             builder.Services.AddDatabase(builder.Configuration);
 
-            builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection(AuthenticationOptions.OptionsKey));
-
             // add mediatr for controllers
-            builder.Services.AddAppMediatR();
+            builder.Services.AddAppMediatR(builder.Configuration);
 
             builder.Services.AddCors(options =>
             {

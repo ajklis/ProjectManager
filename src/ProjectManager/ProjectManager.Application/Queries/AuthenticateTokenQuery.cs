@@ -1,6 +1,6 @@
-﻿using MediatR;
+﻿using AuthenticationService.Contracts;
+using MediatR;
 using ProjectManager.Application.Common;
-using ProjectManager.Domain.Contracts;
 
 namespace ProjectManager.Application.Queries
 {
@@ -8,21 +8,21 @@ namespace ProjectManager.Application.Queries
 
     public class AuthenticateTokenQueryHandler : IRequestHandler<AuthenticateTokenQuery, CommandResult>
     {
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IAuthenticationRequester _auth;
 
-        public AuthenticateTokenQueryHandler(IAuthenticationService authenticationService)
+        public AuthenticateTokenQueryHandler(IAuthenticationRequester auth)
         {
-            _authenticationService = authenticationService;
+            _auth = auth;
         }
 
         public async Task<CommandResult> Handle(AuthenticateTokenQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                var token = await _authenticationService.AuthenticateTokenAsync(request.TokenId);
+                var token = await _auth.SendTokenRequest(request.TokenId);
 
                 return token is not null
-                    ? CommandResult.Success(token.TokenId)
+                    ? CommandResult.Success(token)
                     : CommandResult.Failed("Not authorized", 401);
             }
             catch (Exception e)
