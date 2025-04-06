@@ -1,10 +1,41 @@
-function validateAndLogin() {
-    let login = document.getElementById("login").value;
-    let haslo = document.getElementById("haslo").value;
+const getTokenUrl = "http://localhost:5000/api/auth/user";
 
-    if (login.trim() === "" || haslo.trim() === "") {
+function validateAndLogin() {
+    const login = document.getElementById("login").value;
+    const password = document.getElementById("password").value;
+
+    if (login.trim() === "" || password.trim() === "") {
         alert("Proszę wypełnić wszystkie pola!");
-    } else {
-        window.location.href = 'index.html';
+        return;
     }
+
+    const bodyData = {
+        Email: login,
+        Password: password
+    };
+
+    console.log("Logowanie...");
+
+    fetch(getTokenUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bodyData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Błąd logowania");
+        }
+        return response.json();
+    })
+    .then(data => {
+        // zakładam, że token to np. data.token
+        sessionStorage.setItem("TokenId", data.token || JSON.stringify(data));
+        window.location.href = 'index.html';
+    })
+    .catch(error => {
+        console.error('Błąd:', error);
+        alert("Nie udało się zalogować. Sprawdź dane.");
+    });
 }

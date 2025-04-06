@@ -3,6 +3,7 @@ using AuthenticationService.Options;
 using Grpc.Core;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Options;
+using System.Net;
 
 namespace AuthenticationService.Services
 {
@@ -15,6 +16,8 @@ namespace AuthenticationService.Services
         {
             _options = options;
             _logger = logger;
+
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
         }
 
         public async Task<Guid?> SendLoginRequestAsync(string email, string hashedPassword, CancellationToken cancellationToken = default)
@@ -23,10 +26,6 @@ namespace AuthenticationService.Services
             {
                 Email = email,
                 HashedPassword = hashedPassword
-            };
-            var handler = new SocketsHttpHandler
-            {
-                EnableMultipleHttp2Connections = true
             };
 
             using (var channel = GetChannel())
@@ -103,12 +102,17 @@ namespace AuthenticationService.Services
         {
             var handler = new SocketsHttpHandler
             {
-                EnableMultipleHttp2Connections = true
+                EnableMultipleHttp2Connections = false,
             };
+            var httpClient = new HttpClient(handler)
+            {
+                DefaultRequestVersion = HttpVersion.Version11 
+            };
+
             var channel = GrpcChannel.ForAddress(_options.Value.AuthenticationChannel,
                 new GrpcChannelOptions
                 {
-                    HttpClient = new HttpClient(handler),
+                    HttpClient = httpClient, 
                     Credentials = ChannelCredentials.Insecure
                 });
 

@@ -45,7 +45,7 @@ services:
         condition: service_healthy
     restart: always
     environment:
-      - ASPNETCORE_URLS=http://*:6000
+      - ASPNETCORE_URLS=http://0.0.0.0:6000
     volumes:
       - ./src/ProjectManager/ProjectManager.API/appsettings.json:/app/appsettings.json
   nginx:
@@ -55,6 +55,7 @@ services:
     ports:
       - "8080:80"
     volumes:
+      - ./src/web/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - ./src/web:/usr/share/nginx/html:ro
 volumes:
   db_data:

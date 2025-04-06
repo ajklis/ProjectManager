@@ -24,7 +24,7 @@ namespace ProjectManager.Application.Queries
             try
             {
                 var users = await _userRepo.GetAll();
-                return CommandResult.Success(users?.ToUserDtoList());
+                return CommandResult.Success(users);//users?.ToUserDtoList());
             }
             catch (Exception e)
             {

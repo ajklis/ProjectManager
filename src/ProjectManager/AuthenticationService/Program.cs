@@ -15,13 +15,15 @@ public class Program
         // For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
         //Console.WriteLine("Auth channel: " + builder.Configuration["AuthenticationOptions:AuthenticationChannel"]);
         //.WebHost.UseUrls(builder.Configuration["AuthenticationOptions:AuthenticationChannel"]);
+        builder.WebHost.UseUrls("http://0.0.0.0:6000"); 
         builder.WebHost.ConfigureKestrel(options =>
         {
-            options.ListenAnyIP(6000, listenOptions =>
+            options.ConfigureEndpointDefaults(def =>
             {
-                listenOptions.Protocols = HttpProtocols.Http2;
+                def.Protocols = HttpProtocols.Http1;
             });
         });
+
         builder.Services.AddDatabase(builder.Configuration);
 
         builder.Services.Configure<AuthenticationOptions>(builder.Configuration.GetSection(AuthenticationOptions.OptionsKey));
