@@ -1,9 +1,9 @@
 ﻿using AuthenticationService.Contracts;
+using AuthenticationService.Models;
 using AuthenticationService.Options;
-using Grpc.Core;
-using Grpc.Net.Client;
 using Microsoft.Extensions.Options;
-using System.Net;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace AuthenticationService.Services
 {
@@ -17,32 +17,32 @@ namespace AuthenticationService.Services
             _options = options;
             _logger = logger;
 
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            _logger.LogDebug("{o}", _options.Value.AuthenticationUrl);
         }
 
         public async Task<Guid?> SendLoginRequestAsync(string email, string hashedPassword, CancellationToken cancellationToken = default)
         {
-            var request = new LoginRequest
+            var requestBody = new LoginRequest
             {
                 Email = email,
                 HashedPassword = hashedPassword
             };
 
-            using (var channel = GetChannel())
+            _logger.LogDebug("{o}", _options.Value.AuthenticationUrl);
+
+            using (var client = new HttpClient())
             {
-                var client = new AuthService.AuthServiceClient(channel);
-                _logger.LogDebug("{c}", _options.Value.AuthenticationChannel);
-                _logger.LogDebug("{e} {p}", email, hashedPassword);
+                var request = CreateJsonRequest($"{_options.Value.AuthenticationUrl}/auth/user", requestBody);
+
                 try
                 {
-                    var response = await client.AuthenticateUserAsync(request, cancellationToken: cancellationToken);
-                    if (string.IsNullOrEmpty(response.Token))
-                        return null;
-                    return Guid.Parse(response.Token);
+                    var response = await client.SendAsync(request);
+                    var content = await response.Content.ReadAsStringAsync();
+                    return Guid.Parse(content);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogDebug("Error while sending login request: {e}", e.ToString());
+                    _logger.LogDebug("{e}", e.Message);
                     return null;
                 }
             }
@@ -50,24 +50,24 @@ namespace AuthenticationService.Services
 
         public async Task<Guid?> SendTokenRequest(Guid tokenId, CancellationToken cancellationToken = default)
         {
-            var request = new TokenRequest
+            var requestBody = new TokenRequest
             {
                 Token = tokenId.ToString()
             };
 
-            using (var channel = GrpcChannel.ForAddress(_options.Value.AuthenticationChannel))
+            using (var client = new HttpClient())
             {
-                var client = new AuthService.AuthServiceClient(channel);
+                var request = CreateJsonRequest($"{_options.Value.AuthenticationUrl}/auth/token", requestBody);
+
                 try
                 {
-                    var response = await client.AuthenticateTokenAsync(request, cancellationToken: cancellationToken);
-                    if (string.IsNullOrEmpty(response.Token))
-                        return null;
-                    return Guid.Parse(response.Token);
+                    var response = await client.SendAsync(request);
+                    var content = await response.Content.ReadAsStringAsync();
+                    return Guid.Parse(content);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogDebug("Error while sending token request: {e}", e.ToString());
+                    _logger.LogDebug("{e}", e.Message);
                     return null;
                 }
             }
@@ -75,48 +75,39 @@ namespace AuthenticationService.Services
 
         public async Task<int?> SendGetUserRequest(Guid tokenId, CancellationToken cancellationToken = default)
         {
-            var request = new TokenRequest
+            var requestBody = new TokenRequest
             {
                 Token = tokenId.ToString()
             };
 
-            using (var channel = GrpcChannel.ForAddress(_options.Value.AuthenticationChannel))
+            using (var client = new HttpClient())
             {
-                var client = new AuthService.AuthServiceClient(channel);
+                var request = CreateJsonRequest($"{_options.Value.AuthenticationUrl}/auth/getUser", requestBody);
+
                 try
                 {
-                    var response = await client.GetUserAsync(request, cancellationToken: cancellationToken);
-                    if (!response.Found)
-                        return null;
-                    return response.Id;
+                    var response = await client.SendAsync(request);
+                    var content = await response.Content.ReadAsStringAsync();
+                    return int.Parse(content);
                 }
                 catch (Exception e)
                 {
-                    _logger.LogDebug("Error while getting user for token: {e}", e.ToString());
+                    _logger.LogDebug("{e}", e.Message);
                     return null;
                 }
             }
         }
 
-        private GrpcChannel GetChannel()
+        private HttpRequestMessage CreateJsonRequest(string url, object content)
         {
-            var handler = new SocketsHttpHandler
+            var request = new HttpRequestMessage()
             {
-                EnableMultipleHttp2Connections = false,
-            };
-            var httpClient = new HttpClient(handler)
-            {
-                DefaultRequestVersion = HttpVersion.Version11 
+                Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json"),
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url)
             };
 
-            var channel = GrpcChannel.ForAddress(_options.Value.AuthenticationChannel,
-                new GrpcChannelOptions
-                {
-                    HttpClient = httpClient, 
-                    Credentials = ChannelCredentials.Insecure
-                });
-
-            return channel;
+            return request;
         }
     }
 }

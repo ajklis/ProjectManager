@@ -38,14 +38,12 @@ services:
     build:
       context: src/ProjectManager 
       dockerfile: AuthenticationService/Dockerfile
-    ports:
-      - "6000:6000"
     depends_on:
       mysql:
         condition: service_healthy
     restart: always
     environment:
-      - ASPNETCORE_URLS=http://0.0.0.0:6000
+      - ASPNETCORE_URLS=http://*:6000
     volumes:
       - ./src/ProjectManager/ProjectManager.API/appsettings.json:/app/appsettings.json
   nginx:
