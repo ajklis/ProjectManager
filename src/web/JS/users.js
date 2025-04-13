@@ -4,9 +4,20 @@ const addUrl = "http://localhost:5000/api/users/add"
 const editUrl = "http://localhost:5000/api/users/update"
 
 
+async function handleUsers() {
+    
+}
+
 async function fetchUsers() {
+    console.log(sessionStorage.getItem('TokenId'));
+    
     try {
-        const response = await fetch(getAllUrl); 
+        const response = await fetch(getAllUrl, {
+            method: 'GET',
+            headers:{
+                'TokenId': sessionStorage.getItem('TokenId')
+            }
+        }); 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }

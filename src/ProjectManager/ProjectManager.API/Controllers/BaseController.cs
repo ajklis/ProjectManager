@@ -26,12 +26,13 @@ namespace ProjectManager.API.Controllers
         protected async Task<IActionResult> HandleRequest<T>(T request, Func<UserDto, bool> allowedPredicate = null) where T : IRequest<CommandResult>
         {
             var headers = this.Request.Headers;
+            var tokenString = headers["TokenId"].ToString().Replace("\"", "");
 
             Console.WriteLine(JsonConvert.SerializeObject(headers));
 
             if (headers["SkipAuth"] != "true")
             {
-                if (!Guid.TryParse(headers["TokenId"], out var tokenId))
+                if (!Guid.TryParse(tokenString, out var tokenId))
                     return FromCommandResult(CommandResult.Unauthorized());
 
                 var tokenResult = await _mediator.Send(new AuthenticateTokenQuery(tokenId));

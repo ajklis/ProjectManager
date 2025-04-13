@@ -1,3 +1,4 @@
+using AuthenticationService.Extensions;
 using Microsoft.EntityFrameworkCore;
 using ProjectManager.Application.Extensions;
 using ProjectManager.Infrastructure.Extensions;
@@ -33,6 +34,7 @@ namespace ProjectManager.API
                           .AllowAnyHeader()
                 );
             });
+            builder.Services.AddAuthenticationRequester(builder.Configuration);
 
             var app = builder.Build();
 

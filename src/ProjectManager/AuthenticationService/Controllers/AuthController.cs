@@ -14,7 +14,6 @@ namespace AuthenticationService.Controllers
         public AuthController(IAuthenticator auth)
         {
             _auth = auth;
-            Console.WriteLine("Added auth controller");
         }
 
         [HttpPost("user")]

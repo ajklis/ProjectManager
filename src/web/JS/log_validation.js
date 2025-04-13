@@ -30,8 +30,8 @@ function validateAndLogin() {
         return response.json();
     })
     .then(data => {
-        // zakładam, że token to np. data.token
-        sessionStorage.setItem("TokenId", data.token || JSON.stringify(data));
+        console.log(data.token);
+        sessionStorage.setItem("TokenId", (data.token || JSON.stringify(data)));
         window.location.href = 'index.html';
     })
     .catch(error => {

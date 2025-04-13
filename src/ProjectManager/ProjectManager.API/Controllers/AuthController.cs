@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using ProjectManager.API.Models;
 using ProjectManager.Application.Queries;
-using System.Net;
 
 namespace ProjectManager.API.Controllers
 {
@@ -21,18 +20,19 @@ namespace ProjectManager.API.Controllers
         [HttpGet("check")]
         public async Task<IActionResult> CheckAuthService()
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
-            var handler = new HttpClientHandler
-            {
-                SslProtocols = System.Security.Authentication.SslProtocols.None
-            };
-            using var client = new HttpClient(handler);
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost:6000/")
-            {
-                Version = HttpVersion.Version11
-            };
+            using var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://auth:6000/");
             var response = await client.SendAsync(request);
             return Ok(response);
+        }
+
+        [HttpGet("userDetails")]
+        public async Task<IActionResult> GetUserDetailsFromToken()
+        {
+            var headers = this.Request.Headers;
+            var tokenString = headers["TokenId"].ToString().Replace("\"", "");
+
+            return FromCommandResult(await _mediator.Send(new GetUserForTokenQuery(Guid.Parse(tokenString))));
         }
     }
 }
