@@ -7,26 +7,19 @@
 </head>
 <body class="body1">
     
-    <div class="title">Project Manager Logowanie</div>
-    
+    <div class="title">Project Manager - Login</div>
     
     <form>
+        <label class="text1" for="login">Username:</label>
+        <input type="text" id="login" name="login" required><br>
+        
+        <label class="text1" for="password">Password:</label>
+        <input type="text" id="password" name="password" required><br>
 
-    
-    <label class="text1" for="login">Login:</label>
-    <input type="text" id="login" name="login" required><br>
-    
-    
-    <label class="text1" for="password">Hasło:</label>
-    <input type="text" id="password" name="password" required><br>
-
-    <div class="buttons">
-    <button onclick="window.location.href= 'register.html'" class="button2" type="submit">Zarejestruj</button>
-    <button id="loginButton" class="button1" type="button">Zaloguj</button>
-    </div>
-
+        <div class="buttons">
+            <button onclick="window.location.href= 'register.html'" class="button2" type="button">Register</button>
+            <button id="loginButton" class="button1" type="button">Login</button>
+        </div>
     </form>
-
-
 </body>
 </html>
