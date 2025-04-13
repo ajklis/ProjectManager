@@ -1,3 +1,5 @@
+import { validate } from "./log_validation.js";
+
 const getAllUrl = 'http://localhost:5000/api/users/all'; 
 const deleteUrl = 'http://localhost:5000/api/users/delete/#id'
 const addUrl = "http://localhost:5000/api/users/add"
@@ -5,7 +7,8 @@ const editUrl = "http://localhost:5000/api/users/update"
 
 
 async function handleUsers() {
-    
+    validate();
+    fetchUsers();
 }
 
 async function fetchUsers() {
@@ -19,7 +22,12 @@ async function fetchUsers() {
             }
         }); 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (response.status == 401){
+                alert("User unauthorized");
+                window.location.href = "index.html";
+            }
+            else
+                throw new Error(response.status);
         }
         const users = await response.json();
         displayUsers(users);
@@ -85,7 +93,12 @@ function displayUsers(users) {
 
 async function deleteUser(id){
     try {
-        const response = await fetch(deleteUrl.replace("#id", id)); 
+        const response = await fetch(deleteUrl.replace("#id", id),{
+            method: 'GET',
+            headers: {
+                'TokenId': sessionStorage.getItem('TokenId')
+            }
+        }); 
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -100,4 +113,4 @@ async function editUser(id) {
 }
 
 
-document.addEventListener('DOMContentLoaded', fetchUsers);
+document.addEventListener('DOMContentLoaded', handleUsers);

@@ -25,19 +25,12 @@ namespace ProjectManager.API.Controllers
                 new GetUserByIdQuery(id),
                 user => user.Role == Domain.Enums.UserRole.Admin || user.Id == id);
 
-        // POST: api/users
-        [HttpPost()]
-        public async Task<IActionResult> Details([FromBody] IdPostModel model)
-            => await HandleRequest(
-                new GetUserByIdQuery(model.Id),
-                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == model.Id);
-
         // POST: api/users/add
         [HttpPost("add")]
         public async Task<IActionResult> Add([FromBody] UserAddModel user)
             => await HandleRequest(
-                new AddUserCommand(user.Name, user.Email, user.Password, user.Role));
-                //user => user.Role == Domain.Enums.UserRole.Admin);
+                new AddUserCommand(user.Name, user.Email, user.Password, user.Role),
+                user => user.Role == Domain.Enums.UserRole.Admin);
 
         // POST: api/users/update
         [HttpPost("update")]
@@ -52,12 +45,5 @@ namespace ProjectManager.API.Controllers
             => await HandleRequest(
                 new DeleteUserCommand(id),
                 user => user.Role == Domain.Enums.UserRole.Admin || user.Id == id);
-
-        // POST: api/users/delete
-        [HttpPost("delete")]
-        public async Task<IActionResult> Delete([FromBody] IdPostModel model)
-            => await HandleRequest(
-                new DeleteUserCommand(model.Id),
-                user => user.Role == Domain.Enums.UserRole.Admin || user.Id == model.Id);
     }
 }

@@ -1,19 +1,7 @@
+import { validate } from "./log_validation.js";
+
 const updateUserUrl = "http://localhost:5000/api/users/update"; // URL do edycji użytkownika
 let currentUserId = null; // Przechowuje ID edytowanego użytkownika
-
-// Funkcja do pobrania użytkownika i wypełnienia formularza
-function editUser(userId) {
-    fetch(`http://localhost:5000/api/users/${userId}`)
-        .then(response => response.json())
-        .then(user => {
-            currentUserId = userId; // Przypisanie ID edytowanego użytkownika
-            const form = document.getElementById("editUserForm");
-            form.elements["name"].value = user.name;
-            form.elements["email"].value = user.email;
-            form.elements["role"].value = user.role;
-        })
-        .catch(error => console.error("Error fetching user data:", error));
-}
 
 // Funkcja do aktualizacji użytkownika
 function updateUser(event) {
@@ -37,6 +25,7 @@ function updateUser(event) {
         headers: {
             "Content-Type": "application/json",
             "Accept": "*/*",
+            "TokenId": sessionStorage.getItem('TokenId')
         },
         body: JSON.stringify(updatedUser),
     })
@@ -60,12 +49,19 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("DOMContentLoaded", async () => {
+    validate();
+    
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get("id");
 
     if (userId) {
         try {
-            const response = await fetch(`http://localhost:5000/api/users/${userId}`);
+            const response = await fetch(`http://localhost:5000/api/users/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'TokenId': sessionStorage.getItem('TokenId')
+                }
+            });
             const user = await response.json();
 
             const form = document.getElementById("editUserForm");

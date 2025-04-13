@@ -4,6 +4,7 @@
     {
         Admin,
         Manager,
-        Developer
+        Developer,
+        Unassigned
     }
 }
