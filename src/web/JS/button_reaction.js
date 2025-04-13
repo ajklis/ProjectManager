@@ -1,4 +1,8 @@
+import { validate } from './log_validation.js'
+
 document.addEventListener("DOMContentLoaded", function () {
+    validate()
+    
     const moreBtn = document.getElementById("moreInfoBtn");
     const moreText = document.getElementById("moreText");
     const heroImage = document.getElementById("heroImage");

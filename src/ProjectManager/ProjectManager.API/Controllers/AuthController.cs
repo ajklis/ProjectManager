@@ -15,7 +15,10 @@ namespace ProjectManager.API.Controllers
 
         [HttpPost("token")]
         public async Task<IActionResult> AuthorizeToken([FromBody] AuthTokenModel model)
-            => FromCommandResult(await _mediator.Send(new AuthenticateTokenQuery(Guid.TryParse(model.TokenId, out Guid result) ? result : Guid.NewGuid())));
+        {
+            model.TokenId = model.TokenId.Replace("\"", "");
+            return FromCommandResult(await _mediator.Send(new AuthenticateTokenQuery(Guid.TryParse(model.TokenId, out Guid result) ? result : Guid.NewGuid())));
+        }
 
         [HttpGet("check")]
         public async Task<IActionResult> CheckAuthService()
@@ -29,10 +32,7 @@ namespace ProjectManager.API.Controllers
         [HttpGet("userDetails")]
         public async Task<IActionResult> GetUserDetailsFromToken()
         {
-            var headers = this.Request.Headers;
-            var tokenString = headers["TokenId"].ToString().Replace("\"", "");
-
-            return FromCommandResult(await _mediator.Send(new GetUserForTokenQuery(Guid.Parse(tokenString))));
+            return FromCommandResult(await _mediator.Send(new GetUserForTokenQuery(GetToken())));
         }
     }
 }

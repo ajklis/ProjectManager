@@ -1,11 +1,36 @@
 const getTokenUrl = "http://localhost:5000/api/auth/user";
+const validateUrl = "http://localhost:5000/api/auth/token"
 
-function validateAndLogin() {
+export function validate(){
+    const tokenBody = {
+        TokenId: sessionStorage.getItem('TokenId')
+    };
+    
+    fetch(validateUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(tokenBody) 
+    })
+    .then(response => {
+        console.log(response);
+        if (!response.ok)
+            throw new Error("Unauthorized")
+        return response.json()
+    })
+    .catch(error => {
+        alert("User not logged in, please log in to continue");
+        window.location.href = 'log.html'
+    });
+}
+
+export function validateAndLogin() {
     const login = document.getElementById("login").value;
     const password = document.getElementById("password").value;
 
     if (login.trim() === "" || password.trim() === "") {
-        alert("Proszę wypełnić wszystkie pola!");
+        alert("Incorrect email or password");
         return;
     }
 
@@ -14,7 +39,7 @@ function validateAndLogin() {
         Password: password
     };
 
-    console.log("Logowanie...");
+    console.log("login");
 
     fetch(getTokenUrl, {
         method: 'POST',
@@ -25,17 +50,19 @@ function validateAndLogin() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("Błąd logowania");
+            throw new Error("Unauthorized");
         }
-        return response.json();
+        return response.text();
     })
     .then(data => {
-        console.log(data.token);
-        sessionStorage.setItem("TokenId", (data.token || JSON.stringify(data)));
+        const token = data.replace(/^"|"$/g, '');
+        console.log('Token:', token);
+        sessionStorage.setItem("TokenId", token);
         window.location.href = 'index.html';
     })
     .catch(error => {
-        console.error('Błąd:', error);
-        alert("Nie udało się zalogować. Sprawdź dane.");
+        console.error('Erorr:', error);
+        alert("Failed to log in");
     });
 }
+

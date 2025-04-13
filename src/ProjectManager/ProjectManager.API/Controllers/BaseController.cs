@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using ProjectManager.Application.Common;
 using ProjectManager.Application.Models;
 using ProjectManager.Application.Queries;
-using ProjectManager.Domain.Entities;
 
 namespace ProjectManager.API.Controllers
 {
@@ -25,15 +23,9 @@ namespace ProjectManager.API.Controllers
 
         protected async Task<IActionResult> HandleRequest<T>(T request, Func<UserDto, bool> allowedPredicate = null) where T : IRequest<CommandResult>
         {
-            var headers = this.Request.Headers;
-            var tokenString = headers["TokenId"].ToString().Replace("\"", "");
-
-            Console.WriteLine(JsonConvert.SerializeObject(headers));
-
-            if (headers["SkipAuth"] != "true")
+            if (this.Request.Headers["SkipAuth"] != "true")
             {
-                if (!Guid.TryParse(tokenString, out var tokenId))
-                    return FromCommandResult(CommandResult.Unauthorized());
+                var tokenId = GetToken();
 
                 var tokenResult = await _mediator.Send(new AuthenticateTokenQuery(tokenId));
 
@@ -54,6 +46,15 @@ namespace ProjectManager.API.Controllers
             }
 
             return FromCommandResult(await _mediator.Send(request));
+        }
+
+        public Guid GetToken()
+        {
+            var tokenString = this.Request.Headers["TokenId"].ToString().Replace("\"", "");
+
+            if (!Guid.TryParse(tokenString, out var token))
+                return Guid.NewGuid();
+            return token;
         }
     }
 }
