@@ -5,16 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Manager</title>
     <link rel="stylesheet" href="CSS/styles.css">
-    <script src="js/script.js"></script>
+    <script src="js/button_reaction.js" defer></script>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo">PROJECT MANAGER</div>
             <nav>
-                <a href="index.html" class="nav-item">Strona Główna</a>
-                <a href="projects.html" class="nav-item">Projekty</a>
-                <a href="users.html" class="nav-item">Użytkownicy</a>
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="projects.html" class="nav-item">Projects</a>
+                <a href="users.html" class="nav-item">Users</a>
             </nav>
         </div>
     </header>
@@ -22,45 +22,52 @@
     <main>
         <section class="hero">
             <div class="hero-text">
-                <h1>Zapanuj nad zadaniami w pracy!</h1>
+                <h1>Take control of your work tasks!</h1>
                 <p>
-                    Wypróbuj prosty program do zarządzania zadaniami, organizuj swoje projekty, 
-                    śledź postępy i współpracuj z zespołem. Wszystko to w jednym miejscu.
+                    Try our simple task management tool to organize projects, 
+                    track progress, and collaborate with your team—all in one place.
                 </p>
                 <div class="buttons">
-                    <a href="#" class="btn secondary">Więcej informacji</a>
+                    <button id="moreInfoBtn" class="btn secondary">More info</button>
+                </div>
+                <div id="moreText" class="more-text hidden">
+                    <p>
+                        Project Manager is an intuitive task management platform that allows
+                        for quick and efficient team organization. With a simple interface, reminders, 
+                        and reporting tools, you can boost your team's productivity!
+                    </p>
                 </div>
             </div>
-            <div class="hero-image">
+            <div class="hero-image" id="heroImage">
                 <img src="computer.png" alt="Project Manager illustration">
             </div>
         </section>
 
         <section class="features">
-            <h2>Co oferuje Project Manager?</h2>
+            <h2>What does Project Manager offer?</h2>
             <div class="features-grid">
                 <div class="feature-item">
-                    <h3>Uporządkowanie zadań</h3>
-                    <p>Wszystkie zadania w jednym miejscu – szybka nawigacja i łatwy podgląd postępów.</p>
+                    <h3>Task Organization</h3>
+                    <p>All your tasks in one place – easy to navigate and monitor progress.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>Komunikator</h3>
-                    <p>Komunikuj się z zespołem w czasie rzeczywistym, zwiększając efektywność pracy.</p>
+                    <h3>Real-Time Chat</h3>
+                    <p>Communicate with your team in real-time to increase work efficiency.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>Prosta obsługa</h3>
-                    <p>Intuicyjny interfejs sprawia, że zarządzanie projektami staje się proste.</p>
+                    <h3>User-Friendly Interface</h3>
+                    <p>Intuitive UI that makes project management easy.</p>
                 </div>
                 <div class="feature-item">
-                    <h3>Bezpłatne demo</h3>
-                    <p>Wypróbuj Project Manager bez żadnych zobowiązań i zobacz, jak działa w praktyce.</p>
+                    <h3>Free Demo</h3>
+                    <p>Try Project Manager with no strings attached and see how it works.</p>
                 </div>
             </div>
         </section>
     </main>
 
     <footer>
-        <p>&copy; 2025 Project Manager. Wszystkie prawa zastrzeżone.</p>
+        <p>&copy; 2025 Project Manager. All rights reserved.</p>
     </footer>
 </body>
 </html>
