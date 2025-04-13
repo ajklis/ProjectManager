@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PROJECT MANAGER</title>
-<link rel="stylesheet" href="CSS/styles.css">
-<script src="JS/log_validation.js"></script>
+    <title>PROJECT MANAGER</title>
+    <link rel="stylesheet" href="CSS/styles.css">
+    <script src="JS/register_validation.js"></script>
 </head>
 <body class="body1">
 
     <div class="title">Project Manager - Register</div>
 
     <form>
-        <label class="text1" for="login">Username:</label>
-        <input type="text" id="login" name="login" required><br>
-        
+        <label class="text1" for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br>
+
+        <label class="text1" for="email">Email:</label>
+        <input type="text" id="email" name="email" required><br>
+
         <label class="text1" for="haslo">Password:</label>
-        <input type="text" id="haslo" name="haslo" required><br>
+        <input type="password" id="haslo" name="haslo" required><br>
 
         <div class="buttons">
-            <button onclick="window.location.href= 'log.html'" class="button2" type="button">Back</button>
-            <button onclick="validateAndLogin()" class="button1" type="button">Register</button>
+            <button onclick="window.location.href='log.html'" class="button2" type="button">Back</button>
+            <button onclick="validateAndRegister()" class="button1" type="button">Register</button>
         </div>
     </form>
+
 </body>
 </html>

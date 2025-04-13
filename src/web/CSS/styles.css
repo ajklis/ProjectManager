@@ -231,38 +231,30 @@ footer {
     margin-bottom: 0.5rem;
     font-weight: bold;
 }
-/* zmiany chudy*/
-.buttons{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+
+/* Poprawki dla inputów */
+input[type="text"], input[type="password"] {
+    width: 100%; /* Sprawia, że inputy zajmują całą szerokość formularza */
+    padding: 10px; /* Dodanie przestrzeni wewnętrznej */
+    font-size: 18px; /* Ujednolicenie rozmiaru czcionki */
+    margin-bottom: 20px; /* Odstęp poniżej inputów */
+    border: 1px solid #ddd; /* Jasna ramka dla inputów */
+    border-radius: 5px; /* Zaokrąglone rogi */
+    background-color: #333; /* Tło inputu dopasowane do ciemnej palety strony */
+    color: #f0f0f0; /* Kolor tekstu dopasowany do jasnej palety */
+    box-sizing: border-box; /* Uwzględnia padding w szerokości inputu */
 }
 
-.button2 {
-    background-color: #6c757d;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 18px;
-    width: 40%;
+/* Stylowanie labeli */
+.text1 {
     display: inline-block;
-    margin-left: 7%;
-  }
-.button1 {
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+    margin-right: 20px;
+    margin-bottom: 10px; /* Mniejszy odstęp */
     font-size: 18px;
-    width: 40%;
-    display: inline-block;
-    margin-right: 7%;
-  }
+    color: #4a90e2; /* Kolor tekstu labeli, spójny z resztą strony */
+}
 
+/* Formularz */
 form {
     background-color: #1e1e1e;
     border-radius: 20px;
@@ -271,7 +263,36 @@ form {
     max-width: 400px;
     width: 100%;
     text-align: center;
- }
+    margin: 0 auto; /* Wyśrodkowanie formularza */
+}
+
+/* Przycisk rejestracji i logowania */
+.button1, .button2 {
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 40%; /* Przycisk zajmuje 40% szerokości formularza */
+    display: inline-block;
+    margin: 10px 0; /* Odstęp między przyciskami */
+}
+
+.button1 {
+    background-color: #4a90e2; /* Kolor przycisku logowania */
+    color: white;
+    border: none;
+}
+
+.button2 {
+    background-color: #6c757d; /* Kolor przycisku rejestracji */
+    color: white;
+    border: none;
+}
+
+.button1:hover, .button2:hover {
+    opacity: 0.9; /* Efekt najechania na przycisk */
+}
+
 .body1 {
     justify-content: center;
     align-items: center;
